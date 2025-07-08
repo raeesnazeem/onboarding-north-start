@@ -40,5 +40,11 @@ export const blockContentType = {
       type: 'image',
       options: {hotspot: true},
     },
+    {
+      type: 'code',
+      options: {
+        withLineNumbers: true,
+      },
+    },
   ],
 }

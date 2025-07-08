@@ -312,6 +312,12 @@ body {
 }
 
 /* Wiki Detail Styles */
+.guide-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 4rem;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -319,29 +325,175 @@ body {
   color: #646cff;
   text-decoration: none;
   margin-bottom: 2rem;
+  font-weight: 500;
+  transition: color 0.2s;
 }
 
-.content-placeholder {
-  margin-top: 2rem;
-  padding: 2rem;
-  background-color: #2a2a2a;
-  border-radius: 8px;
-  border: 1px dashed #444;
+.back-link:hover {
+  color: #535bf2;
+}
+
+.guide-header {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 2rem;
+}
+
+.guide-meta-top {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.guide-category-detail {
+  background-color: #333;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
   color: #888;
 }
 
+.guide-header h1 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.guide-meta-bottom {
+  display: flex;
+  gap: 2rem;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.guide-content {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: #e5e7eb;
+}
+
+.guide-content h1, 
+.guide-content h2, 
+.guide-content h3 {
+  color: white;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.guide-content p {
+  margin-bottom: 1.5rem;
+}
+
+.guide-content ul {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.guide-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Code Block Styles */
+.code-block {
+  background-color: #0d1117;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #30363d;
+}
+
+.code-header {
+  background-color: #161b22;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #30363d;
+  font-size: 0.8rem;
+  color: #8b949e;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 1.5rem;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.95rem;
+}
+
+.code-block code {
+  color: #e6edf3;
+}
+
+/* Author Card Styles */
+.guide-footer {
+  margin-top: 5rem;
+  padding-top: 3rem;
+  border-top: 1px solid #333;
+}
+
+.author-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #333;
+}
+
+.author-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #646cff;
+}
+
+.author-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.author-info p {
+  margin: 0;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 640px) {
+  .guide-header h1 {
+    font-size: 2.25rem;
+  }
+  .guide-meta-bottom {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .author-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  .main-nav, .main-footer {
-    background-color: #f9f9f9;
-    border-color: #eee;
-  }
-  .nav-links a { color: #213547; }
-  .feature-card, .guide-card, .content-placeholder {
+  .guide-category-detail {
     background-color: #f3f4f6;
+  }
+  .guide-content {
+    color: #374151;
+  }
+  .guide-content h1, 
+  .guide-content h2, 
+  .guide-content h3 {
+    color: #111827;
+  }
+  .author-card {
+    background-color: #f9fafb;
     border-color: #e5e7eb;
   }
 }
