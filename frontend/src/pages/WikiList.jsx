@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, Book } from 'lucide-react';
+import { Search, Filter, Book, Inbox } from 'lucide-react';
 import { client } from '../sanityClient';
+import { SkeletonCard, EmptyState } from '../components/States';
 
 const WikiList = () => {
   const [guides, setGuides] = useState([]);
@@ -45,10 +46,6 @@ const WikiList = () => {
     return matchesSearch && matchesCategory;
   });
 
-  if (loading) {
-    return <div className="loading">Loading guides...</div>;
-  }
-
   return (
     <div className="wiki-list-page">
       <header className="wiki-header">
@@ -82,7 +79,9 @@ const WikiList = () => {
       </div>
 
       <div className="guides-grid">
-        {filteredGuides.length > 0 ? (
+        {loading ? (
+          [...Array(6)].map((_, i) => <SkeletonCard key={i} />)
+        ) : filteredGuides.length > 0 ? (
           filteredGuides.map(guide => (
             <Link key={guide._id} to={`/wiki/${guide.slug}`} className="guide-card">
               <div className="guide-card-header">
@@ -99,9 +98,10 @@ const WikiList = () => {
             </Link>
           ))
         ) : (
-          <div className="no-results">
-            No guides found matching your criteria.
-          </div>
+          <EmptyState 
+            message="No guides found matching your criteria." 
+            icon={Inbox} 
+          />
         )}
       </div>
     </div>

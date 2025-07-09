@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, BookOpen } from 'lucide-react';
+import { ArrowLeft, Calendar, User, BookOpen, AlertCircle } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import { client, urlFor } from '../sanityClient';
+import { SkeletonDetail, EmptyState } from '../components/States';
 
 const ptComponents = {
   types: {
@@ -84,8 +85,19 @@ const WikiDetail = () => {
     fetchGuide();
   }, [slug]);
 
-  if (loading) return <div className="loading">Loading guide...</div>;
-  if (!guide) return <div className="error">Guide not found.</div>;
+  if (loading) return <SkeletonDetail />;
+  
+  if (!guide) return (
+    <div className="guide-detail">
+      <Link to="/wiki" className="back-link">
+        <ArrowLeft size={18} /> Back to guides
+      </Link>
+      <EmptyState 
+        message="Guide not found. It may have been moved or deleted." 
+        icon={AlertCircle} 
+      />
+    </div>
+  );
 
   return (
     <article className="guide-detail">
