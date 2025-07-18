@@ -10,7 +10,9 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeTag, setActiveTag] = useState(null);
+  const [activeTab, setActiveTab] = useState('recent'); // 'recent' or 'favorites'
   
+  const [error, setError] = useState(null);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
@@ -25,14 +27,20 @@ function App() {
         setTags(tgs);
       } catch (error) {
         console.error("Failed to fetch sidebar data:", error);
+        setError("⚠️ Could not connect to Sanity. Please check your CORS settings at sanity.io/manage.");
       }
     };
     fetchSidebarData();
   }, []);
 
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <div className="flex flex-col min-h-screen bg-white dark:bg-[#121212] font-sans">
+        {error && (
+          <div className="bg-red-500 text-white p-2 text-center text-xs font-bold animate-pulse">
+            {error}
+          </div>
+        )}
         <TopNav searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         
         <div className="flex flex-1 overflow-hidden h-[calc(100vh-64px)]">
@@ -43,6 +51,8 @@ function App() {
             setActiveCategory={setActiveCategory}
             activeTag={activeTag}
             setActiveTag={setActiveTag}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
           />
           
           <main className="flex-1 overflow-y-auto bg-white dark:bg-[#121212] p-8">
@@ -55,6 +65,7 @@ function App() {
                       searchTerm={searchTerm} 
                       activeCategory={activeCategory} 
                       activeTag={activeTag} 
+                      activeTab={activeTab}
                     />
                   } 
                 />

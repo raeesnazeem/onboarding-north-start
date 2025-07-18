@@ -58,6 +58,7 @@ const WikiDetail = () => {
 
   useEffect(() => {
     const fetchGuide = async () => {
+      const timer = setTimeout(() => setLoading(false), 5000);
       try {
         const data = await client.fetch(
           `*[_type == "guide" && slug.current == $slug][0]{
@@ -80,6 +81,7 @@ const WikiDetail = () => {
       } catch (error) {
         console.error('Error fetching guide:', error);
       } finally {
+        clearTimeout(timer);
         setLoading(false);
       }
     };
@@ -100,11 +102,11 @@ const WikiDetail = () => {
   
   if (!guide) return (
     <div className="max-w-3xl mx-auto py-12">
-      <Link to="/wiki" className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors">
-        <ArrowLeft size={18} /> Back to guides
+      <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors">
+        <ArrowLeft size={18} /> Back to materials
       </Link>
       <EmptyState 
-        message="Guide not found. It may have been moved or deleted." 
+        message="Material not found. It may have been moved or deleted." 
         icon={AlertCircle} 
       />
     </div>
@@ -112,8 +114,8 @@ const WikiDetail = () => {
 
   return (
     <article className="max-w-3xl mx-auto pb-16">
-      <Link to="/wiki" className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors">
-        <ArrowLeft size={18} /> Back to guides
+      <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium mb-8 transition-colors">
+        <ArrowLeft size={18} /> Back to materials
       </Link>
 
       <header className="mb-12 pb-8 border-b border-border-light dark:border-border-dark">

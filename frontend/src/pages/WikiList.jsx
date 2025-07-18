@@ -4,12 +4,15 @@ import { client } from '../sanityClient';
 import { SkeletonCard, EmptyState } from '../components/States';
 import MaterialCard from '../components/MaterialCard';
 
-const WikiList = ({ searchTerm, activeCategory, activeTag }) => {
+const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchGuides = async () => {
+      // Safety timeout: Ensure loading always closes after 5 seconds no matter what
+      const timer = setTimeout(() => setLoading(false), 5000);
+
       try {
         const data = await client.fetch(`*[_type == "guide"] | order(createdAt desc) {
           _id,
@@ -24,10 +27,11 @@ const WikiList = ({ searchTerm, activeCategory, activeTag }) => {
           "tags": tags[]->{title},
           author->{name}
         }`);
-        setGuides(data);
+        setGuides(data || []);
       } catch (error) {
         console.error('Error fetching guides:', error);
       } finally {
+        clearTimeout(timer);
         setLoading(false);
       }
     };
@@ -40,14 +44,17 @@ const WikiList = ({ searchTerm, activeCategory, activeTag }) => {
                           (guide.excerpt && guide.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = activeCategory === 'all' || guide.category === activeCategory;
     const matchesTag = !activeTag || (guide.tags && guide.tags.some(t => t.title === activeTag));
+    const matchesTab = activeTab === 'favorites' ? guide.isFavorite === true : true;
     
-    return matchesSearch && matchesCategory && matchesTag;
+    return matchesSearch && matchesCategory && matchesTag && matchesTab;
   });
+
+  const pageTitle = activeTab === 'favorites' ? 'Favorites' : 'Recent';
 
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Recent</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{pageTitle}</h1>
         <div className="flex items-center gap-2">
           <button className="p-1.5 text-yellow-500 bg-yellow-50 dark:bg-yellow-500/10 rounded">
             <LayoutGrid size={20} />
@@ -68,7 +75,7 @@ const WikiList = ({ searchTerm, activeCategory, activeTag }) => {
         ) : (
           <div className="col-span-full mt-10">
             <EmptyState 
-              message="No materials found matching your criteria. Try adjusting your filters or search term." 
+              message={`No ${activeTab === 'favorites' ? 'favorite ' : ''}materials found matching your criteria. Try adjusting your filters or search term.`} 
             />
           </div>
         )}
