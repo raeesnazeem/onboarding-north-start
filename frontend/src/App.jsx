@@ -1,65 +1,68 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
-import Home from './pages/Home'
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { client } from './sanityClient'
+import TopNav from './components/TopNav'
+import Sidebar from './components/Sidebar'
 import WikiList from './pages/WikiList'
 import WikiDetail from './pages/WikiDetail'
 
-const NavLink = ({ to, children }) => {
-  const location = useLocation();
-  const isActive = location.pathname === to || (to !== '/' && location.pathname.startsWith(to));
-  
-  return (
-    <Link 
-      to={to} 
-      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-        isActive 
-          ? 'bg-primary/10 text-primary' 
-          : 'text-text-muted-light dark:text-text-muted-dark hover:text-text-light dark:hover:text-text-dark hover:bg-card-light dark:hover:bg-card-dark'
-      }`}
-    >
-      {children}
-    </Link>
-  );
-};
-
 function App() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeTag, setActiveTag] = useState(null);
+  
+  const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    const fetchSidebarData = async () => {
+      try {
+        const [cats, tgs] = await Promise.all([
+          client.fetch(`*[_type == "category"]{ _id, title }`),
+          client.fetch(`*[_type == "tag"]{ _id, title }`)
+        ]);
+        setCategories(cats);
+        setTags(tgs);
+      } catch (error) {
+        console.error("Failed to fetch sidebar data:", error);
+      }
+    };
+    fetchSidebarData();
+  }, []);
+
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-bg-light dark:bg-bg-dark">
-        <nav className="sticky top-0 z-50 w-full border-b border-border-light dark:border-border-dark bg-bg-light/80 dark:bg-bg-dark/80 backdrop-blur-md">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <Link to="/" className="flex items-center gap-2 group">
-                <div className="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-xl group-hover:scale-105 transition-transform">
-                  N
-                </div>
-                <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-text-light to-text-muted-light dark:from-white dark:to-gray-400">
-                  North Star
-                </span>
-              </Link>
-              <div className="flex gap-2">
-                <NavLink to="/">Home</NavLink>
-                <NavLink to="/wiki">Guides</NavLink>
-              </div>
+      <div className="flex flex-col min-h-screen bg-white dark:bg-[#121212] font-sans">
+        <TopNav searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        
+        <div className="flex flex-1 overflow-hidden h-[calc(100vh-64px)]">
+          <Sidebar 
+            categories={categories}
+            tags={tags}
+            activeCategory={activeCategory} 
+            setActiveCategory={setActiveCategory}
+            activeTag={activeTag}
+            setActiveTag={setActiveTag}
+          />
+          
+          <main className="flex-1 overflow-y-auto bg-white dark:bg-[#121212] p-8">
+            <div className="max-w-[1200px] mx-auto">
+              <Routes>
+                <Route 
+                  path="/" 
+                  element={
+                    <WikiList 
+                      searchTerm={searchTerm} 
+                      activeCategory={activeCategory} 
+                      activeTag={activeTag} 
+                    />
+                  } 
+                />
+                <Route path="/wiki/:slug" element={<WikiDetail />} />
+              </Routes>
             </div>
-          </div>
-        </nav>
-
-        <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/wiki" element={<WikiList />} />
-            <Route path="/wiki/:slug" element={<WikiDetail />} />
-          </Routes>
-        </main>
-
-        <footer className="border-t border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark mt-auto">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <p className="text-center text-sm text-text-muted-light dark:text-text-muted-dark">
-              &copy; {new Date().getFullYear()} Onboarding North Star. All rights reserved.
-            </p>
-          </div>
-        </footer>
+          </main>
+        </div>
       </div>
     </Router>
   )

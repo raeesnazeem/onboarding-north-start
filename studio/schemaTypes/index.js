@@ -3,6 +3,7 @@ import {categoryType} from './category'
 import {authorType} from './author'
 import {guideType} from './guide'
 import {blockContentType} from './blockContent'
+import {tagType} from './tag'
 
 export const schemaTypes = [
   postType,
@@ -10,4 +11,5 @@ export const schemaTypes = [
   authorType,
   guideType,
   blockContentType,
+  tagType,
 ]
