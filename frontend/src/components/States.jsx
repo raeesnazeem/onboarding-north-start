@@ -1,18 +1,36 @@
 import React from 'react';
 
-export const SkeletonCard = () => (
-  <div className="flex flex-col h-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl p-6 gap-4">
-    <div className="flex justify-between items-start">
-      <div className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-800 shimmer-effect"></div>
-      <div className="w-20 h-6 rounded-full bg-gray-200 dark:bg-gray-800 shimmer-effect"></div>
+export const SkeletonCard = ({ viewMode = 'grid' }) => {
+  if (viewMode === 'list') {
+    return (
+      <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800 rounded-xl gap-6">
+        <div className="w-24 h-4 bg-gray-200 dark:bg-gray-700 rounded shimmer-effect hidden sm:block"></div>
+        <div className="flex-grow space-y-2">
+          <div className="w-1/3 h-5 bg-gray-200 dark:bg-gray-700 rounded shimmer-effect"></div>
+          <div className="w-1/2 h-3 bg-gray-200 dark:bg-gray-700 rounded shimmer-effect"></div>
+        </div>
+        <div className="flex gap-2">
+          <div className="w-16 h-5 bg-gray-200 dark:bg-gray-700 rounded-full shimmer-effect hidden lg:block"></div>
+          <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded shimmer-effect"></div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col h-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-2xl p-6 gap-4">
+      <div className="flex justify-between items-start">
+        <div className="w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-800 shimmer-effect"></div>
+        <div className="w-20 h-6 rounded-full bg-gray-200 dark:bg-gray-800 shimmer-effect"></div>
+      </div>
+      <div className="w-3/4 h-6 bg-gray-200 dark:bg-gray-800 rounded mt-2 shimmer-effect"></div>
+      <div className="flex justify-between items-center pt-4 border-t border-border-light dark:border-border-dark mt-auto">
+        <div className="w-1/3 h-5 bg-gray-200 dark:bg-gray-800 rounded shimmer-effect"></div>
+        <div className="w-1/4 h-5 bg-gray-200 dark:bg-gray-800 rounded shimmer-effect"></div>
+      </div>
     </div>
-    <div className="w-3/4 h-6 bg-gray-200 dark:bg-gray-800 rounded mt-2 shimmer-effect"></div>
-    <div className="flex justify-between items-center pt-4 border-t border-border-light dark:border-border-dark mt-auto">
-      <div className="w-1/3 h-5 bg-gray-200 dark:bg-gray-800 rounded shimmer-effect"></div>
-      <div className="w-1/4 h-5 bg-gray-200 dark:bg-gray-800 rounded shimmer-effect"></div>
-    </div>
-  </div>
-);
+  );
+};
 
 export const SkeletonDetail = () => (
   <div className="max-w-3xl mx-auto py-12">
