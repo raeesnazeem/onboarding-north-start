@@ -50,8 +50,16 @@ export const EmptyState = ({ message, icon: Icon }) => (
       </div>
     )}
     <h3 className="text-xl font-medium text-text-light dark:text-white mb-2">No results found</h3>
-    <p className="text-text-muted-light dark:text-text-muted-dark max-w-md">
+    <p className="text-text-muted-light dark:text-text-muted-dark max-w-md mb-8">
       {message}
     </p>
+    <a 
+      href="http://localhost:3333/structure/guide" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 py-3 rounded-xl font-bold transition-all hover:-translate-y-0.5 shadow-lg shadow-yellow-400/20"
+    >
+      Create your first material
+    </a>
   </div>
 );

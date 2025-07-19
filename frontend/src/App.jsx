@@ -34,7 +34,7 @@ function App() {
   }, []);
 
   return (
-    <Router basename={import.meta.env.BASE_URL}>
+    <Router>
       <div className="flex flex-col min-h-screen bg-white dark:bg-[#121212] font-sans">
         {error && (
           <div className="bg-red-500 text-white p-2 text-center text-xs font-bold animate-pulse">
