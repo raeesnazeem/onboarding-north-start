@@ -76,7 +76,7 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="appearance-none bg-gray-50 dark:bg-gray-800/50 border-none rounded-lg pl-10 pr-10 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 cursor-pointer"
+              className="appearance-none bg-gray-50 dark:bg-gray-800/50 border-none rounded-lg pl-10 pr-10 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
             >
               <option value="date">Sort by Date</option>
               <option value="name">Sort by Name</option>
@@ -95,7 +95,7 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
               onClick={() => setViewMode('grid')}
               className={`p-1.5 rounded transition-all ${
                 viewMode === 'grid' 
-                  ? 'bg-white dark:bg-gray-700 text-yellow-500 shadow-sm' 
+                  ? 'bg-white dark:bg-gray-700 text-primary shadow-sm' 
                   : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
               }`}
               title="Grid View"
@@ -106,7 +106,7 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
               onClick={() => setViewMode('list')}
               className={`p-1.5 rounded transition-all ${
                 viewMode === 'list' 
-                  ? 'bg-white dark:bg-gray-700 text-yellow-500 shadow-sm' 
+                  ? 'bg-white dark:bg-gray-700 text-primary shadow-sm' 
                   : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'
               }`}
               title="List View"

@@ -30,7 +30,7 @@ const Sidebar = ({
           onClick={() => handleFilterClick(() => setActiveTab('recent'))}
           className={`flex items-center text-left px-4 py-2.5 rounded-full font-medium text-sm w-full transition-colors ${
             activeTab === 'recent' 
-              ? 'bg-yellow-50 dark:bg-yellow-500/10 text-gray-900 dark:text-white' 
+              ? 'bg-primary/10 text-primary dark:text-white' 
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
           }`}
         >
@@ -40,7 +40,7 @@ const Sidebar = ({
           onClick={() => handleFilterClick(() => setActiveTab('favorites'))}
           className={`flex items-center text-left px-4 py-2.5 rounded-full font-medium text-sm w-full transition-colors ${
             activeTab === 'favorites' 
-              ? 'bg-yellow-50 dark:bg-yellow-500/10 text-gray-900 dark:text-white' 
+              ? 'bg-primary/10 text-primary dark:text-white' 
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
           }`}
         >
@@ -66,7 +66,7 @@ const Sidebar = ({
             All
           </button>
           {categories.map((cat, i) => {
-            const colors = ['bg-blue-400', 'bg-purple-400', 'bg-red-400', 'bg-green-400', 'bg-yellow-400'];
+            const colors = ['bg-blue-400', 'bg-purple-400', 'bg-red-400', 'bg-green-400', 'bg-primary'];
             const colorClass = colors[i % colors.length];
             return (
               <button 

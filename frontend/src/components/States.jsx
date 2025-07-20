@@ -75,7 +75,7 @@ export const EmptyState = ({ message, icon: Icon }) => (
       href="http://localhost:3333/structure/guide" 
       target="_blank" 
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 py-3 rounded-xl font-bold transition-all hover:-translate-y-0.5 shadow-lg shadow-yellow-400/20"
+      className="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-bold transition-all hover:-translate-y-0.5 shadow-lg shadow-primary/20"
     >
       Create your first material
     </a>

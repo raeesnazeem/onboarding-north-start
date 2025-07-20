@@ -41,7 +41,7 @@ export const guideType = {
           {title: 'Purple', value: 'purple'},
           {title: 'Red', value: 'red'},
           {title: 'Green', value: 'green'},
-          {title: 'Yellow', value: 'yellow'},
+          {title: 'Teal (Growth99)', value: 'teal'},
           {title: 'Gray', value: 'gray'},
         ],
       },

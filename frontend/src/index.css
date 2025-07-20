@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #f59e0b; /* Yellow matches the reference */
-  --color-primary-hover: #eab308;
+  --color-primary: #00b1ac; /* Growth99 Teal */
+  --color-primary-hover: #009692;
   --color-bg-light: #ffffff;
   --color-bg-dark: #121212;
   --color-card-light: #f9fafb;

@@ -10,7 +10,7 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
       case 'purple': return 'bg-[#f4e8ff] dark:bg-purple-900/20';
       case 'red': return 'bg-[#fee8e7] dark:bg-red-900/20';
       case 'green': return 'bg-[#e2fbed] dark:bg-green-900/20';
-      case 'yellow': return 'bg-[#fef4d8] dark:bg-yellow-900/20';
+      case 'teal': return 'bg-[#e0f2f1] dark:bg-teal-900/20';
       default: return 'bg-[#f8f9fa] dark:bg-gray-800/50';
     }
   };
@@ -21,7 +21,7 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
       case 'purple': return 'bg-purple-500 text-white';
       case 'red': return 'bg-red-500 text-white';
       case 'green': return 'bg-green-500 text-white';
-      case 'yellow': return 'bg-yellow-500 text-white';
+      case 'teal': return 'bg-primary text-white';
       default: return 'bg-gray-500 text-white';
     }
   };
@@ -44,7 +44,7 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
           </div>
 
           <div className="flex-grow min-w-0">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate group-hover:text-yellow-600 transition-colors">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate group-hover:text-primary transition-colors">
               {guide.title}
             </h3>
             <p className="text-xs text-gray-600 dark:text-gray-400 truncate mt-1">
@@ -67,8 +67,8 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
         </Link>
 
         <div className="flex items-center gap-2 ml-4 flex-shrink-0">
-          <button className="text-gray-400 hover:text-yellow-500 transition-colors p-1">
-            <Star size={16} className={guide.isFavorite ? 'fill-yellow-500 text-yellow-500' : ''} />
+          <button className="text-gray-400 hover:text-primary transition-colors p-1">
+            <Star size={16} className={guide.isFavorite ? 'fill-primary text-primary' : ''} />
           </button>
           <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors p-1">
             <MoreVertical size={16} />
@@ -120,8 +120,8 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
       </Link>
 
       <div className="absolute bottom-6 right-6 flex items-center gap-3">
-        <button className="text-gray-400 hover:text-yellow-500 transition-colors">
-          <Star size={18} className={guide.isFavorite ? 'fill-yellow-500 text-yellow-500' : ''} />
+        <button className="text-gray-400 hover:text-primary transition-colors">
+          <Star size={18} className={guide.isFavorite ? 'fill-primary text-primary' : ''} />
         </button>
         <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
           <MoreVertical size={18} />

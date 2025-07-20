@@ -92,7 +92,7 @@ const WikiDetail = () => {
   const getDifficultyColor = (difficulty) => {
     switch(difficulty?.toLowerCase()) {
       case 'beginner': return 'bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-500/10 dark:text-yellow-400';
+      case 'intermediate': return 'bg-teal-100 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400';
       case 'advanced': return 'bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400';
       default: return 'bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-400';
     }
