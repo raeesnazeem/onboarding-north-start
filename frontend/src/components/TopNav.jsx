@@ -20,7 +20,7 @@ const TopNav = ({ searchTerm, setSearchTerm }) => {
           <img 
             src="https://growth99.com/storage/2024/09/logo-growth99.svg" 
             alt="Growth99 Logo" 
-            className="h-8 w-auto"
+            className="h-5 w-auto"
           />
           <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
              <span className="text-primary">inbase</span>

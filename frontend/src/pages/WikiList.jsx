@@ -10,33 +10,33 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [sortBy, setSortBy] = useState('date'); // 'date', 'name', 'starred'
 
+  const fetchGuides = async () => {
+    const timer = setTimeout(() => setLoading(false), 5000);
+
+    try {
+      const data = await client.fetch(`*[_type == "guide"] {
+        _id,
+        title,
+        "slug": slug.current,
+        excerpt,
+        difficulty,
+        cardColor,
+        createdAt,
+        isFavorite,
+        "category": category->title,
+        "tags": tags[]->{title},
+        author->{name}
+      }`);
+      setGuides(data || []);
+    } catch (error) {
+      console.error('Error fetching guides:', error);
+    } finally {
+      clearTimeout(timer);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchGuides = async () => {
-      const timer = setTimeout(() => setLoading(false), 5000);
-
-      try {
-        const data = await client.fetch(`*[_type == "guide"] {
-          _id,
-          title,
-          "slug": slug.current,
-          excerpt,
-          difficulty,
-          cardColor,
-          createdAt,
-          isFavorite,
-          "category": category->title,
-          "tags": tags[]->{title},
-          author->{name}
-        }`);
-        setGuides(data || []);
-      } catch (error) {
-        console.error('Error fetching guides:', error);
-      } finally {
-        clearTimeout(timer);
-        setLoading(false);
-      }
-    };
-
     fetchGuides();
   }, []);
 
@@ -122,7 +122,7 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
           [...Array(4)].map((_, i) => <SkeletonCard key={i} viewMode={viewMode} />)
         ) : filteredGuides.length > 0 ? (
           filteredGuides.map(guide => (
-            <MaterialCard key={guide._id} guide={guide} viewMode={viewMode} />
+            <MaterialCard key={guide._id} guide={guide} viewMode={viewMode} onUpdate={fetchGuides} />
           ))
         ) : (
           <div className="col-span-full mt-10">

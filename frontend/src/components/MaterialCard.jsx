@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Star, MoreVertical } from 'lucide-react';
+import { Star, MoreVertical, Edit2, Trash2, ExternalLink } from 'lucide-react';
+import { client } from '../sanityClient';
 
-const MaterialCard = ({ guide, viewMode = 'grid' }) => {
+const MaterialCard = ({ guide, viewMode = 'grid', onUpdate }) => {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
   // Map standard colors to pastel variants matching the design
   const getBgColor = (colorStr) => {
     switch(colorStr?.toLowerCase()) {
@@ -26,8 +30,60 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
     }
   };
 
+  const handleToggleFavorite = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isUpdating) return;
+
+    setIsUpdating(true);
+    try {
+      await client
+        .patch(guide._id)
+        .set({ isFavorite: !guide.isFavorite })
+        .commit();
+      
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error('Failed to update favorite status:', error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!window.confirm('Are you sure you want to delete this material?')) return;
+
+    try {
+      await client.delete(guide._id);
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error('Failed to delete material:', error);
+    }
+  };
+
   const bgClass = getBgColor(guide.cardColor || 'blue');
   const primaryTagClass = getTagColor(guide.cardColor || 'blue');
+
+  const MenuDropdown = () => (
+    <div className="absolute right-0 top-10 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-50 py-2 overflow-hidden animate-in fade-in zoom-in duration-200">
+      <a 
+        href={`http://localhost:3333/structure/guide;${guide._id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+      >
+        <Edit2 size={14} /> Edit in Studio
+      </a>
+      <button 
+        onClick={handleDelete}
+        className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors w-full text-left"
+      >
+        <Trash2 size={14} /> Delete Material
+      </button>
+    </div>
+  );
 
   if (viewMode === 'list') {
     return (
@@ -66,13 +122,22 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
           </div>
         </Link>
 
-        <div className="flex items-center gap-2 ml-4 flex-shrink-0">
-          <button className="text-gray-400 hover:text-primary transition-colors p-1">
+        <div className="flex items-center gap-2 ml-4 flex-shrink-0 relative">
+          <button 
+            onClick={handleToggleFavorite}
+            disabled={isUpdating}
+            className={`text-gray-400 hover:text-primary transition-colors p-1 ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
             <Star size={16} className={guide.isFavorite ? 'fill-primary text-primary' : ''} />
           </button>
-          <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors p-1">
+          <button 
+            onClick={(e) => { e.preventDefault(); setShowMenu(!showMenu); }}
+            onBlur={() => setTimeout(() => setShowMenu(false), 200)}
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors p-1"
+          >
             <MoreVertical size={16} />
           </button>
+          {showMenu && <MenuDropdown />}
         </div>
       </div>
     );
@@ -120,12 +185,23 @@ const MaterialCard = ({ guide, viewMode = 'grid' }) => {
       </Link>
 
       <div className="absolute bottom-6 right-6 flex items-center gap-3">
-        <button className="text-gray-400 hover:text-primary transition-colors">
+        <button 
+          onClick={handleToggleFavorite}
+          disabled={isUpdating}
+          className={`text-gray-400 hover:text-primary transition-colors ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
           <Star size={18} className={guide.isFavorite ? 'fill-primary text-primary' : ''} />
         </button>
-        <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-          <MoreVertical size={18} />
-        </button>
+        <div className="relative">
+          <button 
+            onClick={(e) => { e.preventDefault(); setShowMenu(!showMenu); }}
+            onBlur={() => setTimeout(() => setShowMenu(false), 200)}
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
+          >
+            <MoreVertical size={18} />
+          </button>
+          {showMenu && <MenuDropdown />}
+        </div>
       </div>
     </div>
   );
