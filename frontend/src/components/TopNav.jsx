@@ -2,7 +2,7 @@ import React from 'react';
 import { Search, Bell, Plus, ChevronDown } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-const TopNav = ({ searchTerm, setSearchTerm }) => {
+const TopNav = ({ searchTerm, setSearchTerm, user }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,14 +57,25 @@ const TopNav = ({ searchTerm, setSearchTerm }) => {
         >
           <Plus size={16} /> Create
         </a>
-        {/* We can keep a static profile icon just for the aesthetic of the reference image, but removed the fake dropdown arrow since it does nothing */}
+        
         <div className="flex items-center gap-2 pl-4 border-l border-gray-100 dark:border-gray-800">
-          <img 
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" 
-            alt="User avatar" 
-            className="w-8 h-8 rounded-full bg-blue-100 border border-gray-200 dark:border-gray-700"
-          />
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Workspace</span>
+          {user ? (
+            <>
+              <img 
+                src={user.imageUrl || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"} 
+                alt={user.name} 
+                className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
+              />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {user.name}
+              </span>
+            </>
+          ) : (
+            <>
+              <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 animate-pulse" />
+              <div className="w-20 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />
+            </>
+          )}
         </div>
       </div>
     </header>
