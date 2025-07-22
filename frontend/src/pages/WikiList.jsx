@@ -64,7 +64,7 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
     return matchesSearch && matchesCategory && matchesTag && matchesTab;
   });
 
-  const pageTitle = activeTab === 'favorites' ? 'Favorites' : 'Recent';
+  const pageTitle = activeTab === 'favorites' ? 'Favorites' : 'Inbase Guides';
 
   return (
     <div>

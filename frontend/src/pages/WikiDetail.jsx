@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, User, BookOpen, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, User, BookOpen, AlertCircle, Star } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import { client, urlFor } from '../sanityClient';
 import { SkeletonDetail, EmptyState } from '../components/States';
@@ -55,39 +55,59 @@ const WikiDetail = () => {
   const { slug } = useParams();
   const [guide, setGuide] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const fetchGuide = useCallback(async () => {
+    try {
+      const data = await client.fetch(
+        `*[_type == "guide" && slug.current == $slug][0]{
+          _id,
+          title,
+          content,
+          difficulty,
+          createdAt,
+          isFavorite,
+          "tags": tags[]->{title},
+          author->{
+            name,
+            image,
+            bio
+          },
+          category->{
+            title
+          }
+        }`,
+        { slug }
+      );
+      setGuide(data);
+    } catch (error) {
+      console.error('Error fetching guide:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [slug]);
 
   useEffect(() => {
-    const fetchGuide = async () => {
-      const timer = setTimeout(() => setLoading(false), 5000);
-      try {
-        const data = await client.fetch(
-          `*[_type == "guide" && slug.current == $slug][0]{
-            title,
-            content,
-            difficulty,
-            createdAt,
-            author->{
-              name,
-              image,
-              bio
-            },
-            category->{
-              title
-            }
-          }`,
-          { slug }
-        );
-        setGuide(data);
-      } catch (error) {
-        console.error('Error fetching guide:', error);
-      } finally {
-        clearTimeout(timer);
-        setLoading(false);
-      }
-    };
-
     fetchGuide();
-  }, [slug]);
+  }, [fetchGuide]);
+
+  const handleToggleFavorite = async () => {
+    if (isUpdating || !guide) return;
+    setIsUpdating(true);
+    try {
+      await client
+        .patch(guide._id)
+        .set({ isFavorite: !guide.isFavorite })
+        .commit();
+      
+      setGuide(prev => ({ ...prev, isFavorite: !prev.isFavorite }));
+    } catch (error) {
+      console.error('Failed to update favorite status:', error);
+      alert(`Could not update favorite: ${error.message}`);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const getDifficultyColor = (difficulty) => {
     switch(difficulty?.toLowerCase()) {
@@ -119,15 +139,35 @@ const WikiDetail = () => {
       </Link>
 
       <header className="mb-12 pb-8 border-b border-border-light dark:border-border-dark">
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <span className={`px-3 py-1 text-sm font-semibold rounded-full capitalize ${getDifficultyColor(guide.difficulty)}`}>
-            {guide.difficulty}
-          </span>
-          {guide.category && (
-            <span className="px-3 py-1 text-sm font-medium rounded-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-muted-light dark:text-text-muted-dark">
-              {guide.category.title}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className={`px-3 py-1 text-sm font-semibold rounded-full capitalize ${getDifficultyColor(guide.difficulty)}`}>
+              {guide.difficulty}
             </span>
-          )}
+            {guide.category && (
+              <span className="px-3 py-1 text-sm font-medium rounded-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark text-text-muted-light dark:text-text-muted-dark">
+                {guide.category.title}
+              </span>
+            )}
+            {guide.tags?.map((tag, i) => (
+              <span key={i} className="px-3 py-1 text-sm font-medium rounded-full bg-primary/10 text-primary">
+                #{tag.title}
+              </span>
+            ))}
+          </div>
+
+          <button 
+            onClick={handleToggleFavorite}
+            disabled={isUpdating}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+              guide.isFavorite 
+                ? 'bg-primary text-white shadow-lg shadow-primary/20' 
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+            } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            <Star size={18} className={guide.isFavorite ? 'fill-white' : ''} />
+            {guide.isFavorite ? 'Saved to Favorites' : 'Add to Favorites'}
+          </button>
         </div>
         
         <h1 className="text-4xl sm:text-5xl font-extrabold text-text-light dark:text-white leading-tight tracking-tight mb-8">

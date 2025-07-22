@@ -6,6 +6,7 @@ export const client = createClient({
   dataset: 'production',
   useCdn: false,
   apiVersion: '2024-03-28',
+  token: import.meta.env.VITE_SANITY_TOKEN, // Required for mutations (star toggle, delete)
 });
 
 const builder = createImageUrlBuilder(client);

@@ -35,16 +35,18 @@ const MaterialCard = ({ guide, viewMode = 'grid', onUpdate }) => {
     e.stopPropagation();
     if (isUpdating) return;
 
+    const newFavoriteStatus = !guide.isFavorite;
     setIsUpdating(true);
     try {
       await client
         .patch(guide._id)
-        .set({ isFavorite: !guide.isFavorite })
+        .set({ isFavorite: newFavoriteStatus })
         .commit();
       
       if (onUpdate) onUpdate();
     } catch (error) {
       console.error('Failed to update favorite status:', error);
+      alert(`Could not update favorite: ${error.message}. Please check your connection and permissions.`);
     } finally {
       setIsUpdating(false);
     }
