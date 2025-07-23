@@ -1,8 +1,9 @@
 import React from 'react';
 import { Search, Bell, Plus, ChevronDown } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import profPic from '../assets/prof-pic.png';
 
-const TopNav = ({ searchTerm, setSearchTerm, user }) => {
+const TopNav = ({ searchTerm, setSearchTerm }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -59,23 +60,14 @@ const TopNav = ({ searchTerm, setSearchTerm, user }) => {
         </a>
         
         <div className="flex items-center gap-2 pl-4 border-l border-gray-100 dark:border-gray-800">
-          {user ? (
-            <>
-              <img 
-                src={user.imageUrl || "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"} 
-                alt={user.name} 
-                className="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
-              />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {user.name}
-              </span>
-            </>
-          ) : (
-            <>
-              <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 animate-pulse" />
-              <div className="w-20 h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse" />
-            </>
-          )}
+          <img 
+            src={profPic} 
+            alt="Raees" 
+            className="w-10 h-10 rounded-full object-cover border-2 border-primary shadow-sm"
+          />
+          <span className="text-sm font-bold text-gray-900 dark:text-white">
+            Raees
+          </span>
         </div>
       </div>
     </header>
