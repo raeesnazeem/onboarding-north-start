@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Star, MoreVertical, Edit2, Trash2, ExternalLink } from 'lucide-react';
 import { client } from '../sanityClient';
 
-const MaterialCard = ({ guide, viewMode = 'grid', onUpdate }) => {
+const MaterialCard = ({ guide, viewMode = 'grid', onUpdate, onOptimisticUpdate }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -36,6 +36,12 @@ const MaterialCard = ({ guide, viewMode = 'grid', onUpdate }) => {
     if (isUpdating) return;
 
     const newFavoriteStatus = !guide.isFavorite;
+    
+    // Optimistic UI Update
+    if (onOptimisticUpdate) {
+      onOptimisticUpdate(guide._id, newFavoriteStatus);
+    }
+
     setIsUpdating(true);
     try {
       await client
@@ -43,9 +49,15 @@ const MaterialCard = ({ guide, viewMode = 'grid', onUpdate }) => {
         .set({ isFavorite: newFavoriteStatus })
         .commit();
       
+      // The background fetch ensures we are in sync eventually
       if (onUpdate) onUpdate();
     } catch (error) {
       console.error('Failed to update favorite status:', error);
+      
+      // Revert optimistic update on failure
+      if (onOptimisticUpdate) {
+        onOptimisticUpdate(guide._id, !newFavoriteStatus);
+      }
       alert(`Could not update favorite: ${error.message}. Please check your connection and permissions.`);
     } finally {
       setIsUpdating(false);

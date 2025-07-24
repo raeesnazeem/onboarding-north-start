@@ -40,6 +40,12 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
     fetchGuides();
   }, []);
 
+  const handleOptimisticUpdate = (id, newFavoriteStatus) => {
+    setGuides(prevGuides => prevGuides.map(guide => 
+      guide._id === id ? { ...guide, isFavorite: newFavoriteStatus } : guide
+    ));
+  };
+
   const sortedGuides = [...guides].sort((a, b) => {
     if (sortBy === 'date') {
       return new Date(b.createdAt) - new Date(a.createdAt);
@@ -122,7 +128,13 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
           [...Array(4)].map((_, i) => <SkeletonCard key={i} viewMode={viewMode} />)
         ) : filteredGuides.length > 0 ? (
           filteredGuides.map(guide => (
-            <MaterialCard key={guide._id} guide={guide} viewMode={viewMode} onUpdate={fetchGuides} />
+            <MaterialCard 
+              key={guide._id} 
+              guide={guide} 
+              viewMode={viewMode} 
+              onUpdate={fetchGuides} 
+              onOptimisticUpdate={handleOptimisticUpdate}
+            />
           ))
         ) : (
           <div className="col-span-full mt-10">
