@@ -15,7 +15,7 @@ const TopNav = ({ searchTerm, setSearchTerm }) => {
   };
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 bg-white dark:bg-[#1a1b1e] border-b border-gray-100 dark:border-gray-800">
+    <header className="h-16 flex items-center justify-between px-6 bg-white border-b border-gray-200">
       <div className="flex items-center gap-8 w-1/2">
         <Link to="/" className="flex items-center gap-2 group">
           <img 
@@ -23,12 +23,12 @@ const TopNav = ({ searchTerm, setSearchTerm }) => {
             alt="Growth99 Logo" 
             className="h-5 w-auto"
           />
-          <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <span className="text-xl font-bold tracking-tight text-gray-900">
              <span className="text-primary">inbase</span>
           </span>
         </Link>
         
-        <div className="flex items-center gap-6 text-sm font-medium text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-6 text-sm font-medium text-gray-600">
           <Link to="/" className="flex items-center gap-2 text-primary border-b-2 border-primary py-5">
             <span className="w-4 h-4 bg-primary/10 rounded flex items-center justify-center">
               <span className="w-2 h-2 bg-primary rounded-sm"></span>
@@ -38,13 +38,13 @@ const TopNav = ({ searchTerm, setSearchTerm }) => {
         </div>
 
         <div className="relative flex-1 max-w-md ml-4">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             placeholder="Search materials..."
             value={searchTerm}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-800/50 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-shadow text-gray-900 dark:text-white placeholder-gray-400"
+            className="w-full pl-9 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-gray-900 placeholder-gray-500"
           />
         </div>
       </div>
@@ -59,13 +59,13 @@ const TopNav = ({ searchTerm, setSearchTerm }) => {
           <Plus size={16} /> Create
         </a>
         
-        <div className="flex items-center gap-2 pl-4 border-l border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-2 pl-4 border-l border-gray-200">
           <img 
             src={profPic} 
             alt="Raees" 
             className="w-10 h-10 rounded-full object-cover border-2 border-primary shadow-sm"
           />
-          <span className="text-sm font-bold text-gray-900 dark:text-white">
+          <span className="text-sm font-bold text-gray-900">
             Raees
           </span>
         </div>
