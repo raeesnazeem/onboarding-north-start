@@ -15,6 +15,14 @@ function App() {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
 
+  // Reset filters when switching tabs
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setActiveCategory('all');
+    setActiveTag(null);
+    setSearchTerm('');
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       // Fetch categories and tags (Sidebar data)
@@ -47,7 +55,7 @@ function App() {
             activeTag={activeTag}
             setActiveTag={setActiveTag}
             activeTab={activeTab}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleTabChange}
           />
           
           <main className="flex-1 overflow-y-auto bg-white dark:bg-[#121212] p-8">

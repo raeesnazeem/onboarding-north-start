@@ -65,10 +65,22 @@ const WikiList = ({ searchTerm, activeCategory, activeTag, activeTab }) => {
                           (guide.excerpt && guide.excerpt.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = activeCategory === 'all' || guide.category === activeCategory;
     const matchesTag = !activeTag || (guide.tags && guide.tags.some(t => t.title === activeTag));
-    const matchesTab = activeTab === 'favorites' ? guide.isFavorite === true : true;
+    const matchesTab = activeTab === 'favorites' ? !!guide.isFavorite : true;
     
     return matchesSearch && matchesCategory && matchesTag && matchesTab;
   });
+
+  // Debug log to help identify filter issues
+  useEffect(() => {
+    if (guides.length > 0) {
+      console.log('WikiList State:', {
+        totalGuides: guides.length,
+        activeTab,
+        favoritesCount: guides.filter(g => !!g.isFavorite).length,
+        filteredCount: filteredGuides.length
+      });
+    }
+  }, [guides, activeTab, filteredGuides.length]);
 
   const pageTitle = activeTab === 'favorites' ? 'Favorites' : 'Inbase Guides';
 
